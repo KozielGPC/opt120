@@ -1,11 +1,11 @@
-CREATE TABLE usuario (
+CREATE TABLE IF NOT EXISTS usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE atividades (
+CREATE TABLE IF NOT EXISTS atividades (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     nota FLOAT,
@@ -13,7 +13,7 @@ CREATE TABLE atividades (
     data_limite DATE
 );
 
-CREATE TABLE usuario_atividades (
+CREATE TABLE IF NOT EXISTS usuario_atividades (
     id_usuario INT,
     id_atividade INT,
     nota_usuario float,
