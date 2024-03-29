@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class UsuarioAtividadesScreen extends StatefulWidget {
   @override
-  _UsuarioAtividadesScreenState createState() => _UsuarioAtividadesScreenState();
+  _UsuarioAtividadesScreenState createState() =>
+      _UsuarioAtividadesScreenState();
 }
 
 class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
@@ -14,49 +15,59 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Associate Usuario with Atividade'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _idUsuarioController,
-              decoration: InputDecoration(labelText: 'ID Usuario'),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              controller: _idAtividadeController,
-              decoration: InputDecoration(labelText: 'ID Atividade'),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              controller: _notaUsuarioController,
-              decoration: InputDecoration(labelText: 'Nota Usuario'),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              controller: _dataEntregaController,
-              decoration: InputDecoration(labelText: 'Data Entrega (YYYY-MM-DD)'),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                _associateUsuarioAtividade();
-              },
-              child: Text('Associate'),
-            ),
-          ],
+        appBar: AppBar(
+          title: Text('Associate Usuario with Atividade'),
         ),
-      ),
-    );
+        body: Center(
+          child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 300),
+              child: Card(
+                margin: EdgeInsets.all(16),
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        controller: _idUsuarioController,
+                        decoration: InputDecoration(labelText: 'ID Usuario'),
+                        keyboardType: TextInputType.number,
+                      ),
+                      TextFormField(
+                        controller: _idAtividadeController,
+                        decoration: InputDecoration(labelText: 'ID Atividade'),
+                        keyboardType: TextInputType.number,
+                      ),
+                      TextFormField(
+                        controller: _notaUsuarioController,
+                        decoration: InputDecoration(labelText: 'Nota Usuario'),
+                        keyboardType: TextInputType.number,
+                      ),
+                      TextFormField(
+                        controller: _dataEntregaController,
+                        decoration: InputDecoration(
+                            labelText: 'Data Entrega (YYYY-MM-DD)'),
+                      ),
+                      SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          _associateUsuarioAtividade();
+                        },
+                        child: Text('Associate'),
+                      ),
+                    ],
+                  ),
+                ),
+              )),
+        ));
   }
 
   void _associateUsuarioAtividade() {
     final int idUsuario = int.tryParse(_idUsuarioController.text) ?? 0;
     final int idAtividade = int.tryParse(_idAtividadeController.text) ?? 0;
-    final double notaUsuario = double.tryParse(_notaUsuarioController.text) ?? 0.0;
+    final double notaUsuario =
+        double.tryParse(_notaUsuarioController.text) ?? 0.0;
     final String dataEntrega = _dataEntregaController.text;
 
     if (idUsuario <= 0 || idAtividade <= 0 || dataEntrega.isEmpty) {
