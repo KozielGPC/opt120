@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart'; // 
+import 'home_page.dart';
+import 'package:app/api_service.dart';
 
 void main() {
+  ApiService.initialize('http://localhost:3000');
   runApp(const MyApp());
 }
 
