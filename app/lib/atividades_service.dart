@@ -1,7 +1,6 @@
 import 'package:app/api_service.dart';
 
 class AtividadeService {
-  // Mocked atividade list for demonstration
   static Future<List<List<String>>> getAtividadeList() async {
     try {
       // final response = await ApiService.get('activites');
@@ -20,6 +19,20 @@ class AtividadeService {
       return atividadesList;
     } catch (e) {
       print('Error fetching activites list: $e');
+      rethrow; // Re-throw the error to propagate it to the caller
+    }
+  }
+
+  static Future<void> createAtividade(String titulo, String nota, String descricao) async {
+    try {
+      final payload = {
+        'titulo': titulo,
+        'nota': nota,
+        'descricao': descricao,
+      };
+      await ApiService.post('activites', payload);
+    } catch (e) {
+      print('Error creating activity: $e');
       rethrow; // Re-throw the error to propagate it to the caller
     }
   }
