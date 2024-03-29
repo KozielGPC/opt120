@@ -14,41 +14,49 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Create Atividade'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _tituloController,
-              decoration: InputDecoration(labelText: 'Titulo'),
-            ),
-            TextFormField(
-              controller: _notaController,
-              decoration: InputDecoration(labelText: 'Nota'),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              controller: _descricaoController,
-              decoration: InputDecoration(labelText: 'Descricao'),
-            ),
-            TextFormField(
-              controller: _dataLimiteController,
-              decoration: InputDecoration(labelText: 'Data Limite (YYYY-MM-DD)'),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                _createAtividade();
-              },
-              child: Text('Create'),
-            ),
-          ],
+        appBar: AppBar(
+          title: Text('Create Atividade'),
         ),
-      ),
-    );
+        body: Center(
+            child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 300),
+                child: Card(
+                  margin: EdgeInsets.all(16),
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextFormField(
+                          controller: _tituloController,
+                          decoration: InputDecoration(labelText: 'Titulo'),
+                        ),
+                        TextFormField(
+                          controller: _notaController,
+                          decoration: InputDecoration(labelText: 'Nota'),
+                          keyboardType: TextInputType.number,
+                        ),
+                        TextFormField(
+                          controller: _descricaoController,
+                          decoration: InputDecoration(labelText: 'Descricao'),
+                        ),
+                        TextFormField(
+                          controller: _dataLimiteController,
+                          decoration: InputDecoration(
+                              labelText: 'Data Limite (YYYY-MM-DD)'),
+                        ),
+                        SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            _createAtividade();
+                          },
+                          child: Text('Create'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ))));
   }
 
   void _createAtividade() {
