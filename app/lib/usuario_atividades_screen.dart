@@ -16,7 +16,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Associate Usuario with Atividade'),
+          title: Text('Activities from Users'),
         ),
         body: Center(
           child: ConstrainedBox(

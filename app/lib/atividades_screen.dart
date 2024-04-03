@@ -34,7 +34,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Atividades'),
+        title: Text('Activities'),
       ),
       body: SingleChildScrollView(
         child: Center(

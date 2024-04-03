@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => UsuarioScreen()),
                     );
                   },
-                  child: Text('Usuario Screen'),
+                  child: Text('Users'),
                 ),
                 SizedBox(height: 16), 
                 ElevatedButton(
@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => AtividadesScreen()),
                     );
                   },
-                  child: Text('Atividades Screen'),
+                  child: Text('Activities'),
                 ),
                 SizedBox(height: 16), 
                 ElevatedButton(
@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => UsuarioAtividadesScreen()),
                     );
                   },
-                  child: Text('Usuario Atividades Screen'),
+                  child: Text('Activities from Users'),
                 ),
               ],
             ),

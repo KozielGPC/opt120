@@ -34,7 +34,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Usuarios'),
+        title: Text('Users'),
       ),
       body: SingleChildScrollView(
         child: Center(
