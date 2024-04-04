@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:app/data_table_widget.dart'; // Import the DataTableWidget
-import 'package:app/atividades_service.dart'; // Import the AtividadeService or wherever you fetch atividade data from
+import 'package:app/data_table_widget.dart'; 
+import 'package:app/atividades_service.dart';
 
 class AtividadesScreen extends StatefulWidget {
   @override
@@ -8,7 +8,7 @@ class AtividadesScreen extends StatefulWidget {
 }
 
 class _AtividadesScreenState extends State<AtividadesScreen> {
-  List<List<String>> _atividadeTableData = []; // Data for the table
+  List<List<String>> _atividadeTableData = []; 
 
   final TextEditingController _tituloController = TextEditingController();
   final TextEditingController _notaController = TextEditingController();
@@ -17,12 +17,10 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
   @override
   void initState() {
     super.initState();
-    _loadAtividades(); // Load atividades when the screen initializes
+    _loadAtividades();
   }
 
   Future<void> _loadAtividades() async {
-    // Fetch atividade data from the backend
-    // For demonstration purposes, let's assume AtividadeService.getAtividadeList() returns a list of atividades
     final atividadeList = await AtividadeService.getAtividadeList();
 
     setState(() {
@@ -58,7 +56,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
                       ElevatedButton(
                         onPressed: () {
                           _showCreateAtividadeModal(
-                              context); // Show modal to create new atividade
+                              context); 
                         },
                         child: Text('Create Atividade'),
                       ),
@@ -66,7 +64,6 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
                   ),
                 ),
                 DataTableWidget(
-                  // Display the table of atividades
                   fieldNames: ['Titulo', 'Nota', 'Descrição'],
                   inputData: _atividadeTableData,
                 ),
@@ -112,7 +109,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); 
               },
               child: Text('Cancel'),
             ),
@@ -139,9 +136,8 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
       _tituloController.clear();
       _notaController.clear();
       _descricaoController.clear();
-      Navigator.of(context).pop(); // Close the modal
+      Navigator.of(context).pop(); 
     } catch (e) {
-      // Handle error
       print('Error creating atividade: $e');
     }
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:app/data_table_widget.dart'; // Import the DataTableWidget
-import 'package:app/user_service.dart'; // Import the UserService or wherever you fetch user data from
+import 'package:app/data_table_widget.dart'; 
+import 'package:app/user_service.dart';
 
 class UsuarioScreen extends StatefulWidget {
   @override
@@ -12,17 +12,15 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  List<List<String>> _userTableData = []; // Data for the table
+  List<List<String>> _userTableData = []; 
 
   @override
   void initState() {
     super.initState();
-    _loadUsers(); // Load users when the screen initializes
+    _loadUsers();
   }
 
   Future<void> _loadUsers() async {
-    // Fetch user data from the backend
-    // For demonstration purposes, let's assume UserService.getUserList() returns a list of users
     final userList = await UserService.getUserList();
 
     setState(() {
@@ -64,7 +62,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
                     ],
                   ),
                 ),
-                DataTableWidget( // Display the table of users
+                DataTableWidget( 
                   fieldNames: ['Name', 'Email'],
                   inputData: _userTableData,
                 ),

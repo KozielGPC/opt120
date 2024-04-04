@@ -9,7 +9,7 @@ class UsuarioAtividadesScreen extends StatefulWidget {
 }
 
 class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
-  List<List<String>> _usersHasActivitiesTableData = []; // Data for the table
+  List<List<String>> _usersHasActivitiesTableData = []; 
 
   final TextEditingController _idUsuarioController = TextEditingController();
   final TextEditingController _idAtividadeController = TextEditingController();
@@ -17,8 +17,6 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
   final TextEditingController _dataEntregaController = TextEditingController();
 
   Future<void> _loadUsersHasActivities() async {
-    // Fetch atividade data from the backend
-    // For demonstration purposes, let's assume AtividadeService.getAtividadeList() returns a list of atividades
     final userHasActivities =
         await UserHasActivitiesService.getAllUserHasActivities();
 
@@ -30,7 +28,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
   @override
   void initState() {
     super.initState();
-    _loadUsersHasActivities(); // Load atividades when the screen initializes
+    _loadUsersHasActivities(); 
   }
 
   @override
@@ -68,7 +66,6 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
                   ),
                 ),
                 DataTableWidget(
-                  // Display the table of atividades
                   fieldNames: ['ID User', 'ID Activitie', 'Grade'],
                   inputData: _usersHasActivitiesTableData,
                 ),
@@ -102,9 +99,8 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
       _idAtividadeController.clear();
       _notaUsuarioController.clear();
       _dataEntregaController.clear();
-      Navigator.of(context).pop(); // Close the modal
+      Navigator.of(context).pop();
     } catch (e) {
-      // Handle error
       print('Error creating user has activity: $e');
     }
   }
@@ -159,7 +155,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); 
               },
               child: Text('Cancel'),
             ),

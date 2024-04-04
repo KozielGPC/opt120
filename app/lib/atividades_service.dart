@@ -8,10 +8,8 @@ class AtividadeService {
       final List<Map<String, dynamic>> mockedAtividades = [
         {'titulo': 'Atividade 1', 'nota': 8.5, 'descricao': 'Descrição da atividade 1'},
         {'titulo': 'Atividade 2', 'nota': 7.0, 'descricao': 'Descrição da atividade 2'},
-        // Add more mocked atividades as needed
       ];
 
-      // Convert each map to a list of strings
       final List<List<String>> atividadesList = mockedAtividades.map((user) {
         return [user['titulo'].toString(), user['nota'].toString(), user['descricao'].toString()];
       }).toList();
@@ -19,7 +17,7 @@ class AtividadeService {
       return atividadesList;
     } catch (e) {
       print('Error fetching activites list: $e');
-      rethrow; // Re-throw the error to propagate it to the caller
+      rethrow; 
     }
   }
 
@@ -33,7 +31,7 @@ class AtividadeService {
       await ApiService.post('activites', payload);
     } catch (e) {
       print('Error creating activity: $e');
-      rethrow; // Re-throw the error to propagate it to the caller
+      rethrow; 
     }
   }
 }

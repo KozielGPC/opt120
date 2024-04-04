@@ -11,7 +11,7 @@ class UserService {
       await ApiService.post('users', payload);
     } catch (e) {
       print('Error creating user: $e');
-      rethrow; // Re-throw the error to propagate it to the caller
+      rethrow;
     }
   }
 
@@ -22,11 +22,8 @@ class UserService {
       final List<Map<String, dynamic>> mockedUsers = [
         {'name': 'John Doe', 'email': 'john@example.com'},
         {'name': 'Jane Smith', 'email': 'jane@example.com'},
-        // Add more mocked users as needed
-        
       ];
 
-      // Convert each map to a list of strings
       final List<List<String>> usersList = mockedUsers.map((user) {
         return [user['name'].toString(), user['email'].toString()];
       }).toList();
@@ -34,7 +31,7 @@ class UserService {
       return usersList;
     } catch (e) {
       print('Error fetching user list: $e');
-      rethrow; // Re-throw the error to propagate it to the caller
+      rethrow;
     }
   }
 }
