@@ -34,12 +34,26 @@ con.connect(function(err) {
 });
 
 app.get('/', (req, res) => {
-  con.query("use progapp", function (err, result) {
+  con.query("use opt120", function (err, result) {
     if (err) throw err;
-    console.log("Using progapp");
+    console.log("Using opt120");
   });
 
   con.query("SELECT * FROM usuario", function (err, result) {
+    if (err) throw err;
+    console.log("Result: " + JSON.stringify(result));
+    res.send(JSON.stringify(result))
+  });
+  
+})
+
+app.get('/activities', (req, res) => {
+  con.query("use opt120", function (err, result) {
+    if (err) throw err;
+    console.log("Using opt120");
+  });
+
+  con.query("SELECT * FROM atividades", function (err, result) {
     if (err) throw err;
     console.log("Result: " + JSON.stringify(result));
     res.send(JSON.stringify(result))
