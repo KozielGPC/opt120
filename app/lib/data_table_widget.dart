@@ -10,17 +10,36 @@ class DataTableWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DataTable(
       columns: _buildColumns(),
-      rows: _buildRows(),
+      rows: _buildRows(context),
     );
   }
 
   List<DataColumn> _buildColumns() {
-    return fieldNames.map((fieldName) => DataColumn(label: Text(fieldName))).toList();
+    List<DataColumn> columns = fieldNames.map((fieldName) => DataColumn(label: Text(fieldName))).toList();
+
+    columns.add(DataColumn(label: Text('Edit')));
+    columns.add(DataColumn(label: Text('Delete')));
+
+    return columns;
   }
 
-  List<DataRow> _buildRows() {
+  List<DataRow> _buildRows(BuildContext context) {
     return inputData.map((data) {
-      return DataRow(cells: _buildCells(data));
+      return DataRow(cells: [
+        ..._buildCells(data),
+        DataCell(IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: () {
+            print("Editing cell");
+          },
+        )),
+        DataCell(IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: () {
+            print("Deleting cell");
+          },
+        )),
+      ]);
     }).toList();
   }
 
