@@ -17,9 +17,14 @@ con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
 
-  con.query("use progapp", function (err, result) {
+  con.query("create database if not exists opt120", function (err, result) {
     if (err) throw err;
-    console.log("Using progapp");
+    console.log("Creating opt120");
+  });
+
+  con.query("use opt120", function (err, result) {
+    if (err) throw err;
+    console.log("Using opt120");
   });
 
   con.query("SELECT * FROM usuario", function (err, result) {
