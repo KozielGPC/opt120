@@ -6,21 +6,13 @@ const userRoutes = Router();
 
 userRoutes.get("/", userController.findMany);
 
-userRoutes.get("/:id", (req, res) => {
-    res.send("Get User by id");
-});
+userRoutes.get("/:id", userController.findById);
 
-userRoutes.post("/", (req, res) => {
-    res.send("Post Users");
-});
+userRoutes.post("/", userController.create);
 
-userRoutes.patch("/:id", (req, res) => {
-    res.send("Patch Users");
-});
+userRoutes.patch("/:id", userController.update);
 
-userRoutes.delete("/:id", (req, res) => {
-    res.send("Delete Users");
-});
+userRoutes.delete("/:id", userController.delete);
 
 module.exports = {
     userRoutes
