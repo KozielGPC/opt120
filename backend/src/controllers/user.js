@@ -1,21 +1,16 @@
 const { responseHandler } = require("../utils/apiResponseHandler");
 const { User } = require("../models/user");
+const { userRepository } = require("../repository/user");
 
 class UserController {
   async findMany(req, res) {
     try {
-    //   const input = req.body;
+      //   const input = req.body;
+      const users = userRepository.findMany();
       return responseHandler.successResponseWithData(
         res,
         "Many Users",
-        [
-          {
-            name: "John Doe",
-          },
-          {
-            name: "Jane Smith",
-          },
-        ],
+        users,
         200
       );
     } catch (error) {
@@ -26,13 +21,13 @@ class UserController {
   async findById(req, res) {
     try {
       const user_id = req.params.id;
-      
+
+      const user = userRepository.findById(user_id);
+
       return responseHandler.successResponseWithData(
         res,
         "User with id: " + user_id,
-        {
-          name: "John Doe",
-        },
+        user,
         200
       );
     } catch (error) {
@@ -43,12 +38,9 @@ class UserController {
   async create(req, res) {
     try {
       const input = req.body;
-      const user = new User(
-        1,
-        input.name,
-        input.email,
-        input.password
-      );
+      const user = new User(1, input.name, input.email, input.password);
+
+      userRepository.create(user);
       return responseHandler.successResponseWithData(
         res,
         "User Created",
@@ -63,13 +55,14 @@ class UserController {
   async update(req, res) {
     try {
       const user_id = req.params.id;
-      
+
+      const user = userRepository.findById(user_id);
+
+      const updated_user = userRepository.update(user);
       return responseHandler.successResponseWithData(
         res,
         "Update User with id: " + user_id,
-        {
-          name: "John Doe",
-        },
+        updated_user,
         200
       );
     } catch (error) {
@@ -80,13 +73,15 @@ class UserController {
   async delete(req, res) {
     try {
       const user_id = req.params.id;
-      
+
+      const user = userRepository.findById(user_id);
+
+      const deleted_user = userRepository.update(user);
+
       return responseHandler.successResponseWithData(
         res,
         "Delete User with id: " + user_id,
-        {
-          name: "John Doe",
-        },
+        deleted_user,
         200
       );
     } catch (error) {
