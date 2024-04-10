@@ -1,4 +1,5 @@
-const dotenvConfig = require("dotenv/config");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const config = {
   PORT: process.env.PORT,
