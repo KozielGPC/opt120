@@ -17,14 +17,10 @@ class UserService {
 
   static Future<List<List<String>>> getUserList() async {
     try {
-      // final response = await ApiService.get('users');
-      // return List<Map<String, dynamic>>.from(response['users']);
-      final List<Map<String, dynamic>> mockedUsers = [
-        {'name': 'John Doe', 'email': 'john@example.com'},
-        {'name': 'Jane Smith', 'email': 'jane@example.com'},
-      ];
+      final response = await ApiService.get('user');
+      final users = List<Map<String, dynamic>>.from(response['data']);
 
-      final List<List<String>> usersList = mockedUsers.map((user) {
+      final List<List<String>> usersList = users.map((user) {
         return [user['name'].toString(), user['email'].toString()];
       }).toList();
 
