@@ -76,7 +76,7 @@ class UserController {
 
       const user = await userRepository.findById(user_id);
 
-      await userRepository.delete(user);
+      await userRepository.delete(user_id);
 
       return responseHandler.successResponseWithData(
         res,

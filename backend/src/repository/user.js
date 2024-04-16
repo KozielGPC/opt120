@@ -50,8 +50,17 @@ class UserRepository{
         return user;
     }
 
-    delete(user) {
-        return user;
+    delete(id) {
+        return new Promise((resolve, reject) => {
+            db.query(userQueries.deleteById(id), function (err, result) {
+                if (err) {
+                    console.error("Error on deleteById Users", err);
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
     }
 }
 
