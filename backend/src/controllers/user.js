@@ -38,8 +38,8 @@ class UserController {
   async create(req, res) {
     try {
       const input = req.body;
-      const user = new User(1, input.name, input.email, input.password);
-
+      const user = new User(input.name, input.email, input.password);
+      
       userRepository.create(user);
       return responseHandler.successResponseWithData(
         res,

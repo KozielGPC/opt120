@@ -8,7 +8,8 @@ class UserService {
         'email': email,
         'senha': senha,
       };
-      await ApiService.post('users', payload);
+      await ApiService.post('user', payload);
+      print('User created successfully');
     } catch (e) {
       print('Error creating user: $e');
       rethrow;

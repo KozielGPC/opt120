@@ -133,13 +133,13 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
 
     try {
       await UserService.createUser(nome, email, senha);
-      await _loadUsers();
+      
+      
       _nomeController.clear();
       _emailController.clear();
       _senhaController.clear();
       Navigator.of(context).pop(); 
     } catch (e) {
-      // Handle error
       print('Error creating user: $e');
     }
   }

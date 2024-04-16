@@ -43,7 +43,16 @@ class UserRepository{
     }
 
     create(user) {
-        return user;
+        return new Promise((resolve, reject) => {
+            db.query(userQueries.create(user.name, user.email, user.password), function (err, result) {
+                if (err) {
+                    console.error("Error on create user", err);
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
     }
 
     update(user) {
