@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/data_table_widget.dart'; 
+import 'package:app/data_table_widget.dart';
 import 'package:app/atividades_service.dart';
 
 class AtividadesScreen extends StatefulWidget {
@@ -8,7 +8,7 @@ class AtividadesScreen extends StatefulWidget {
 }
 
 class _AtividadesScreenState extends State<AtividadesScreen> {
-  List<List<String>> _atividadeTableData = []; 
+  List<List<String>> _atividadeTableData = [];
 
   final TextEditingController _tituloController = TextEditingController();
   final TextEditingController _notaController = TextEditingController();
@@ -55,8 +55,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          _showCreateAtividadeModal(
-                              context); 
+                          _showCreateAtividadeModal(context);
                         },
                         child: Text('Create Atividade'),
                       ),
@@ -66,6 +65,14 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
                 DataTableWidget(
                   fieldNames: ['Titulo', 'Nota', 'Descrição'],
                   inputData: _atividadeTableData,
+                  deleteRow: (index) {
+                    // Delete row logic here
+                    print('Deleting row at index $index');
+                  },
+                  updateRow: (index) {
+                    // Update row logic here
+                    print('Updating row at index $index');
+                  },
                 ),
               ],
             ),
@@ -109,7 +116,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               child: Text('Cancel'),
             ),
@@ -136,7 +143,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
       _tituloController.clear();
       _notaController.clear();
       _descricaoController.clear();
-      Navigator.of(context).pop(); 
+      Navigator.of(context).pop();
     } catch (e) {
       print('Error creating atividade: $e');
     }

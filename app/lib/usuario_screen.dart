@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/data_table_widget.dart'; 
+import 'package:app/data_table_widget.dart';
 import 'package:app/user_service.dart';
 
 class UsuarioScreen extends StatefulWidget {
@@ -12,7 +12,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  List<List<String>> _userTableData = []; 
+  List<List<String>> _userTableData = [];
 
   @override
   void initState() {
@@ -62,9 +62,16 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
                     ],
                   ),
                 ),
-                DataTableWidget( 
-                  fieldNames: ['Name', 'Email'],
+                DataTableWidget(
+                  fieldNames: ['ID', 'Name', 'Email'],
                   inputData: _userTableData,
+                  deleteRow: (index) {
+                    _deleteUser(context, index);
+                  },
+                  updateRow: (index) {
+                    // Update row logic here
+                    print('Updating row at index $index');
+                  },
                 ),
               ],
             ),
@@ -109,7 +116,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                _createUsuario(context);
+                _createUser(context);
               },
               child: Text('Create'),
             ),
@@ -119,24 +126,42 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
     );
   }
 
-  void _createUsuario(BuildContext context) async {
+  void _createUser(BuildContext context) async {
     final String nome = _nomeController.text;
     final String email = _emailController.text;
     final String senha = _senhaController.text;
 
-    // Call the UserService to create the user
     try {
       await UserService.createUser(nome, email, senha);
-      // Reload users after creating the new user
       await _loadUsers();
-      // Clear input fields
       _nomeController.clear();
       _emailController.clear();
       _senhaController.clear();
-      Navigator.of(context).pop(); // Close the modal
+      Navigator.of(context).pop(); 
     } catch (e) {
       // Handle error
       print('Error creating user: $e');
+    }
+  }
+
+  void _deleteUser(BuildContext context, int index) async {
+    try {
+      final user = _userTableData[index];
+      await UserService.deleteUser(user[0]);
+      _userTableData.removeAt(index);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User deleted successfully'),
+        ),
+      );
+
+      setState(() {
+        _userTableData = _userTableData;
+      });
+
+    } catch (e) {
+      print('Error deleting user: $e');
     }
   }
 }

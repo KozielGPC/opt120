@@ -9,7 +9,7 @@ class UsuarioAtividadesScreen extends StatefulWidget {
 }
 
 class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
-  List<List<String>> _usersHasActivitiesTableData = []; 
+  List<List<String>> _usersHasActivitiesTableData = [];
 
   final TextEditingController _idUsuarioController = TextEditingController();
   final TextEditingController _idAtividadeController = TextEditingController();
@@ -28,7 +28,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
   @override
   void initState() {
     super.initState();
-    _loadUsersHasActivities(); 
+    _loadUsersHasActivities();
   }
 
   @override
@@ -68,6 +68,14 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
                 DataTableWidget(
                   fieldNames: ['ID User', 'ID Activitie', 'Grade'],
                   inputData: _usersHasActivitiesTableData,
+                  deleteRow: (index) {
+                    // Delete row logic here
+                    print('Deleting row at index $index');
+                  },
+                  updateRow: (index) {
+                    // Update row logic here
+                    print('Updating row at index $index');
+                  },
                 ),
               ],
             ),
@@ -155,7 +163,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               child: Text('Cancel'),
             ),
