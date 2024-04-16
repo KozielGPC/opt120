@@ -6,7 +6,7 @@ class UserController {
   async findMany(req, res) {
     try {
       //   const input = req.body;
-      const users = userRepository.findMany();
+      const users = await userRepository.findMany();
       return responseHandler.successResponseWithData(
         res,
         "Many Users",
@@ -22,7 +22,7 @@ class UserController {
     try {
       const user_id = req.params.id;
 
-      const user = userRepository.findById(user_id);
+      const user = await userRepository.findById(user_id);
 
       return responseHandler.successResponseWithData(
         res,
@@ -74,14 +74,14 @@ class UserController {
     try {
       const user_id = req.params.id;
 
-      const user = userRepository.findById(user_id);
+      const user = await userRepository.findById(user_id);
 
-      const deleted_user = userRepository.update(user);
+      await userRepository.delete(user);
 
       return responseHandler.successResponseWithData(
         res,
         "Delete User with id: " + user_id,
-        deleted_user,
+        user,
         200
       );
     } catch (error) {

@@ -1,20 +1,45 @@
+const { db } = require("../providers/database");
+const { userQueries } = require("../queries/user"); 
+
 class UserRepository{
-    findMany() {
-        return [
-            {
-                name: "John Doe",
-            },
-            {
-                name: "Jane Smith",
-            },
-        ];
+    async findMany() {
+        return new Promise((resolve, reject) => {
+            db.query(userQueries.findMany, function (err, result) {
+                if (err) {
+                    console.error("Error on findMany Users", err);
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+        // return [
+        //     {
+        //         id: 1,
+        //         name: "John Doe",
+        //     },
+        //     {
+        //         id: 2,
+        //         name: "Jane Doe",
+        //     },
+        // ];
     }
 
-    findById(id) {
-        return {
-            id,
-            name: "John Doe",
-        };
+    async findById(id) {
+        return new Promise((resolve, reject) => {
+            db.query(userQueries.findById(id), function (err, result) {
+                if (err) {
+                    console.error("Error on findById Users", err);
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+        // return {
+        //     id,
+        //     name: "John Doe",
+        // };
     }
 
     create(user) {
