@@ -72,7 +72,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
                     _deleteUserHasActivity(index);
                   },
                   updateRow: (index) {
-                    print('Updating row at index $index');
+                    _showUpdateUserHasActivityModal(context, index);
                   },
                 ),
               ],
@@ -190,6 +190,74 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
                 _associateUserHasActivity(context);
               },
               child: Text('Create'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updateUserHasActivity(BuildContext context, int index) async {
+    final userHasActivity = _usersHasActivitiesTableData[index];
+
+    final int idUsuario = int.tryParse(userHasActivity[0]) ?? 0;
+    final int idAtividade = int.tryParse(userHasActivity[1]) ?? 0;
+    final double grade = double.tryParse(_gradeController.text) ?? 0.0;
+
+    try {
+      await UserHasActivitiesService.updateUserActivityGrade(idUsuario, idAtividade, grade);
+      _usersHasActivitiesTableData[index] = [userHasActivity[0], userHasActivity[1], _gradeController.text, userHasActivity[3]];
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('UserHasActivity updated successfully'),
+        ),
+      );
+
+      setState(() {
+        _usersHasActivitiesTableData = _usersHasActivitiesTableData;
+      });
+
+      _gradeController.clear();
+      Navigator.of(context).pop();
+    } catch (e) {
+      print('Error updating UserHasActivity: $e');
+    }
+  }
+
+  void _showUpdateUserHasActivityModal(BuildContext context, int index) {
+    final userHasActivity = _usersHasActivitiesTableData[index];
+    _idUsuarioController.text = userHasActivity[0];
+    _idAtividadeController.text = userHasActivity[1]; 
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Update User Has Activity'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _gradeController,
+                  decoration: InputDecoration(labelText: 'Grade'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); 
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _updateUserHasActivity(context, index);
+              },
+              child: Text('Update'),
             ),
           ],
         );
