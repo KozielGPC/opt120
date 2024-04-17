@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:app/data_table_widget.dart';
 import 'package:app/user_has_activities_service.dart';
-import 'package:flutter/material.dart';
 
 class UsuarioAtividadesScreen extends StatefulWidget {
   @override
@@ -13,8 +13,8 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
 
   final TextEditingController _idUsuarioController = TextEditingController();
   final TextEditingController _idAtividadeController = TextEditingController();
-  final TextEditingController _notaUsuarioController = TextEditingController();
-  final TextEditingController _dataEntregaController = TextEditingController();
+  final TextEditingController _gradeController = TextEditingController();
+  final TextEditingController _sendDateController = TextEditingController();
 
   Future<void> _loadUsersHasActivities() async {
     final userHasActivities =
@@ -60,20 +60,18 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
                         onPressed: () {
                           _showCreateUserHasActivityModal(context);
                         },
-                        child: Text('Associate Activitie with User'),
+                        child: Text('Associate Activity with User'),
                       ),
                     ],
                   ),
                 ),
                 DataTableWidget(
-                  fieldNames: ['ID User', 'ID Activitie', 'Grade'],
+                  fieldNames: ['ID User', 'ID Activity', 'Grade', 'Send Date'],
                   inputData: _usersHasActivitiesTableData,
                   deleteRow: (index) {
-                    // Delete row logic here
-                    print('Deleting row at index $index');
+                    _deleteUserHasActivity(index);
                   },
                   updateRow: (index) {
-                    // Update row logic here
                     print('Updating row at index $index');
                   },
                 ),
@@ -85,31 +83,50 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
     );
   }
 
-  void _associateUsuarioAtividade(BuildContext context) async {
+  void _deleteUserHasActivity(int index) async {
+    final int userId = int.tryParse(_usersHasActivitiesTableData[index][0]) ?? 0;
+    final int activityId = int.tryParse(_usersHasActivitiesTableData[index][1]) ?? 0;
+
+    if (userId <= 0 || activityId <= 0) {
+      _showError('Invalid user or activity ID');
+      return;
+    }
+
+    try {
+      await UserHasActivitiesService.deleteUserHasActivity(userId, activityId);
+      _loadUsersHasActivities();
+      _showSuccess('User has activity deleted successfully');
+    } catch (e) {
+      print('Error deleting user has activity: $e');
+      _showError('Error deleting user has activity');
+    }
+  }
+
+  void _associateUserHasActivity(BuildContext context) async {
     final int idUsuario = int.tryParse(_idUsuarioController.text) ?? 0;
     final int idAtividade = int.tryParse(_idAtividadeController.text) ?? 0;
-    final double notaUsuario =
-        double.tryParse(_notaUsuarioController.text) ?? 0.0;
-    final String dataEntrega = _dataEntregaController.text;
+    final double grade = double.tryParse(_gradeController.text) ?? 0.0;
+    final String sendDate = _sendDateController.text;
 
-    if (idUsuario <= 0 || idAtividade <= 0 || dataEntrega.isEmpty) {
+    if (idUsuario <= 0 || idAtividade <= 0 || sendDate.isEmpty) {
       _showError('Please fill required fields');
       return;
     }
 
     try {
       await UserHasActivitiesService.assignActivityToUser(
-          idAtividade, idUsuario, notaUsuario);
+          idAtividade, idUsuario, grade, sendDate);
 
       await _loadUsersHasActivities();
 
       _idUsuarioController.clear();
       _idAtividadeController.clear();
-      _notaUsuarioController.clear();
-      _dataEntregaController.clear();
+      _gradeController.clear();
+      _sendDateController.clear();
       Navigator.of(context).pop();
     } catch (e) {
       print('Error creating user has activity: $e');
+      _showError('Error creating user has activity');
     }
   }
 
@@ -136,7 +153,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Create User Has Activitie'),
+          title: Text('Associate Activity with User'),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,12 +167,13 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
                   decoration: InputDecoration(labelText: 'ID Activity'),
                 ),
                 TextFormField(
-                  controller: _notaUsuarioController,
+                  controller: _gradeController,
                   decoration: InputDecoration(labelText: 'Grade'),
                 ),
                 TextFormField(
-                  controller: _dataEntregaController,
-                  decoration: InputDecoration(labelText: 'Send date'),
+                  controller: _sendDateController,
+                  decoration: InputDecoration(labelText: 'Send Date (YYYY-MM-DD)'),
+                  keyboardType: TextInputType.datetime,
                 ),
               ],
             ),
@@ -169,7 +187,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                _associateUsuarioAtividade(context);
+                _associateUserHasActivity(context);
               },
               child: Text('Create'),
             ),

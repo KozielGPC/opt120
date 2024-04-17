@@ -1,49 +1,60 @@
 import 'package:app/api_service.dart';
 
 class UserHasActivitiesService {
-  static Future<List<List<String>>>  getAllUserHasActivities() async {
+  static Future<List<List<String>>> getAllUserHasActivities() async {
     try {
-      // final response = await ApiService.get('user_has_activities');
-      // return List<Map<String, dynamic>>.from(response['user_has_activities']);
-      final List<Map<String, dynamic>> mockedUserHasActivities = [
-        {'id_usuario': 1, 'id_atividade': 1, 'nota_usuario': 8.0},
-        {'id_usuario': 2, 'id_atividade': 1, 'nota_usuario': 7.5},
-      ];
+      final response = await ApiService.get('user-has-activity');
+      final userHasActivities =
+          List<Map<String, dynamic>>.from(response['data']);
 
-      final List<List<String>> usersHasActivitiesList = mockedUserHasActivities.map((user) {
-        return [user['id_usuario'].toString(), user['id_atividade'].toString(), user['nota_usuario'].toString()];
+      final List<List<String>> usersHasActivitiesList =
+          userHasActivities.map((userHasActivity) {
+        return [
+          userHasActivity['user_id'].toString(),
+          userHasActivity['activity_id'].toString(),
+          userHasActivity['user_grade'].toString(),
+          userHasActivity['send_date'].toString()
+        ];
       }).toList();
       return usersHasActivitiesList;
     } catch (e) {
       print('Error fetching user-has-activities list: $e');
-      rethrow; 
+      rethrow;
     }
   }
 
-  static Future<void> assignActivityToUser(int userId, int activityId, double userGrade) async {
+  static Future<void> assignActivityToUser(
+      int userId, int activityId, double userGrade, String sendDate) async {
     try {
       final payload = {
-        'id_usuario': userId,
-        'id_atividade': activityId,
-        'nota_usuario': userGrade,
+        'user_id': userId,
+        'activity_id': activityId,
+        'user_grade': userGrade,
+        'send_date': sendDate
       };
-      await ApiService.post('user_has_activities', payload);
+
+      final response = await ApiService.post('user-has-activity', payload);
+      return response['data'][0];
     } catch (e) {
       print('Error assigning activity to user: $e');
-      rethrow; 
+      rethrow;
     }
   }
 
-  static Future<void> deleteUserActivityRelation(int userId, int activityId) async {
+  static Future<void> deleteUserHasActivity(
+      int userId, int activityId) async {
     try {
-      await ApiService.delete('user_has_activities/$userId/$activityId');
+      await ApiService.delete('user-has-activity/user/$userId/activity/$activityId');
+
+      print('User Activity deleted successfully');
     } catch (e) {
       print('Error deleting user activity relation: $e');
-      rethrow; 
+      rethrow;
     }
   }
 
-  static Future<void> updateUserActivityGrade(int userId, int activityId, double userGrade) async {
+  static Future<void> updateUserActivityGrade(
+      int userId, int activityId, double userGrade) async {
     try {
       final payload = {
         'nota_usuario': userGrade,
@@ -51,7 +62,7 @@ class UserHasActivitiesService {
       await ApiService.put('user_has_activities/$userId/$activityId', payload);
     } catch (e) {
       print('Error updating user activity grade: $e');
-      rethrow; 
+      rethrow;
     }
   }
 }
