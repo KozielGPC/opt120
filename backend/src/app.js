@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { activityRoutes } = require("./routes/activity");
 const { userRoutes } = require("./routes/user");
+const { userHasActivityRoutes } = require("./routes/user-has-activity");
 const { db } = require("./providers/database");
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use("/activity", activityRoutes);
 app.use("/user", userRoutes);
+app.use("/user-has-activity", userHasActivityRoutes);
 
 db.connect(function (err) {
   if (err) {
