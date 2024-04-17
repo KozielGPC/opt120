@@ -68,9 +68,11 @@ class UserHasActivityController {
       const id_user = req.params.id_user;
       const id_activity = req.params.id_activity;
 
+      const input = req.body
+
       const userHasActivity = await userHasActivityRepository.findByUserIdAndActivityId(id_user, id_activity);
 
-      await userHasActivityRepository.update(id_user, id_activity, user_grade);
+      await userHasActivityRepository.update(id_user, id_activity, input.user_grade);
 
       return responseHandler.successResponseWithData(
         res,
