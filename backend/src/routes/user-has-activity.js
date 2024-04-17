@@ -12,7 +12,7 @@ userHasActivityRoutes.post("/", userHasActivityController.create);
 
 // userHasActivityRoutes.patch("/:id", userHasActivityController.update);
 
-// userHasActivityRoutes.delete("/:id", userHasActivityController.delete);
+userHasActivityRoutes.delete("/user/:id_user/activity/:id_activity", userHasActivityController.delete);
 
 module.exports = {
     userHasActivityRoutes

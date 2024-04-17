@@ -83,16 +83,17 @@ class UserHasActivityController {
 
   async delete(req, res) {
     try {
-      const user_id = req.params.id;
+      const id_user = req.params.id_user;
+      const id_activity = req.params.id_activity;
 
-      const user = await userRepository.findById(user_id);
+      const userHasActivity = await userHasActivityRepository.findByUserIdAndActivityId(id_user, id_activity);
 
-      await userRepository.delete(user_id);
+      await userHasActivityRepository.delete(id_user, id_activity);
 
       return responseHandler.successResponseWithData(
         res,
-        "Delete User with id: " + user_id,
-        user,
+        "Delete userHasActivity with user id: " + id_user + " activity id: " + id_activity,
+        userHasActivity,
         200
       );
     } catch (error) {

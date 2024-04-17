@@ -15,11 +15,11 @@ class UserHasActivityRepository {
         });
     }
 
-    async findById(id) {
+    async findByUserIdAndActivityId(id_user, id_activity) {
         return new Promise((resolve, reject) => {
-            db.query(userQueries.findById(id), function (err, result) {
+            db.query(userHasActivityQueries.findByUserIdAndActivityId(id_user, id_activity), function (err, result) {
                 if (err) {
-                    console.error("Error on findById Users", err);
+                    console.error("Error on findByUserIdAndActivityId", err);
                     reject(err);
                 } else {
                     resolve(result);
@@ -66,11 +66,11 @@ class UserHasActivityRepository {
         return user;
     }
 
-    async delete(id) {
+    async delete(id_user, id_activity) {
         return new Promise((resolve, reject) => {
-            db.query(userQueries.deleteById(id), function (err, result) {
+            db.query(userHasActivityQueries.deleteByUserIdAndActivityId(id_user, id_activity), function (err, result) {
                 if (err) {
-                    console.error("Error on deleteById Users", err);
+                    console.error("Error on deleteByUserIdAndActivityId", err);
                     reject(err);
                 } else {
                     resolve(result);
