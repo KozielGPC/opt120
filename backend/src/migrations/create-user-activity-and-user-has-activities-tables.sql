@@ -19,6 +19,6 @@ CREATE TABLE IF NOT EXISTS user_has_activities (
     user_grade float,
     delivery_date date,
     PRIMARY KEY (id_user, id_activity),
-    FOREIGN KEY (id_user) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_user) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (id_activity) REFERENCES activities(id) ON DELETE CASCADE
 );
