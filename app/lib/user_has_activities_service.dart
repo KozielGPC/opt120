@@ -10,10 +10,10 @@ class UserHasActivitiesService {
       final List<List<String>> usersHasActivitiesList =
           userHasActivities.map((userHasActivity) {
         return [
-          userHasActivity['user_id'].toString(),
-          userHasActivity['activity_id'].toString(),
+          userHasActivity['id_user'].toString(),
+          userHasActivity['id_activity'].toString(),
           userHasActivity['user_grade'].toString(),
-          userHasActivity['send_date'].toString()
+          userHasActivity['delivery_date'].toString()
         ];
       }).toList();
       return usersHasActivitiesList;
@@ -30,7 +30,7 @@ class UserHasActivitiesService {
         'user_id': userId,
         'activity_id': activityId,
         'user_grade': userGrade,
-        'send_date': sendDate
+        'delivery_date': sendDate
       };
 
       final response = await ApiService.post('user-has-activity', payload);
