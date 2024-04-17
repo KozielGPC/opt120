@@ -132,13 +132,30 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
     final String senha = _senhaController.text;
 
     try {
-      await UserService.createUser(nome, email, senha);
-      
-      
+      final createdUser = await UserService.createUser(nome, email, senha);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User created successfully'),
+        ),
+      );
+
+      final userData = [
+        '${createdUser['id']}',
+        '${createdUser['name']}',
+        '${createdUser['email']}',
+      ];
+
+      _userTableData.add(userData);
+
+      setState(() {
+        _userTableData = _userTableData;
+      });
+
       _nomeController.clear();
       _emailController.clear();
       _senhaController.clear();
-      Navigator.of(context).pop(); 
+      Navigator.of(context).pop();
     } catch (e) {
       print('Error creating user: $e');
     }
@@ -159,7 +176,6 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
       setState(() {
         _userTableData = _userTableData;
       });
-
     } catch (e) {
       print('Error deleting user: $e');
     }

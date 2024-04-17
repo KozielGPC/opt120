@@ -1,15 +1,15 @@
 import 'package:app/api_service.dart';
 
 class UserService {
-  static Future<void> createUser(String nome, String email, String senha) async {
+  static Future createUser(String nome, String email, String senha) async {
     try {
       final payload = {
-        'nome': nome,
+        'name': nome,
         'email': email,
-        'senha': senha,
+        'password': senha,
       };
-      await ApiService.post('user', payload);
-      print('User created successfully');
+      final response = await ApiService.post('user', payload);
+      return response['data'][0];
     } catch (e) {
       print('Error creating user: $e');
       rethrow;
@@ -22,7 +22,11 @@ class UserService {
       final users = List<Map<String, dynamic>>.from(response['data']);
 
       final List<List<String>> usersList = users.map((user) {
-        return [user['id'].toString(), user['name'].toString(), user['email'].toString()];
+        return [
+          user['id'].toString(),
+          user['name'].toString(),
+          user['email'].toString()
+        ];
       }).toList();
 
       return usersList;
