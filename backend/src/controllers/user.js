@@ -38,13 +38,26 @@ class UserController {
   async create(req, res) {
     try {
       const input = req.body;
-      const user = new User(input.name, input.email, input.password);
-      
-      userRepository.create(user);
+
+      const emailExists = await userRepository.findByEmail(input.email);
+
+      if (emailExists.length > 0) {
+        return responseHandler.validationErrorResponse(
+          res,
+          "Email already exists"
+        );
+      }
+
+      const user = new User(null, input.name, input.email, input.password);
+
+      await userRepository.create(user);
+
+      const createdUser = await userRepository.getLastInsert();
+
       return responseHandler.successResponseWithData(
         res,
         "User Created",
-        user,
+        createdUser,
         200
       );
     } catch (error) {
