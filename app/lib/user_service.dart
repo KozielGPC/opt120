@@ -36,6 +36,20 @@ class UserService {
     }
   }
 
+  static Future updateUser(String id, String name, String email) async {
+    try {
+      final payload = {
+        'name': name,
+        'email': email,
+      };
+      final response = await ApiService.patch('user/$id', payload);
+      return response['data'][0];
+    } catch (e) {
+      print('Error updating user: $e');
+      rethrow;
+    }
+  }
+
   static Future<void> deleteUser(String id) async {
     try {
       await ApiService.delete('user/$id');

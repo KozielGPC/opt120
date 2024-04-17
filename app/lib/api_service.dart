@@ -52,6 +52,20 @@ class ApiService {
     }
   }
 
+  static Future<Map<String, dynamic>> patch(String path, Map<String, dynamic> payload, {Map<String, String>? headers}) async {
+    final response = await http.patch(
+      Uri.parse('$_baseUrl/$path'),
+      headers: {..._defaultHeaders, ...?headers},
+      body: jsonEncode(payload),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to perform patch request');
+    }
+  }
+
   static Future<void> delete(String path, {Map<String, String>? headers}) async {
     final response = await http.delete(
       Uri.parse('$_baseUrl/$path'),

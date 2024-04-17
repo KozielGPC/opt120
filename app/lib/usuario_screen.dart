@@ -69,8 +69,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
                     _deleteUser(context, index);
                   },
                   updateRow: (index) {
-                    // Update row logic here
-                    print('Updating row at index $index');
+                    _showUpdateUserModal(context, index);
                   },
                 ),
               ],
@@ -179,5 +178,76 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
     } catch (e) {
       print('Error deleting user: $e');
     }
+  }
+
+  void _updateUser(BuildContext context, int index) async {
+    final String name = _nomeController.text;
+    final String email = _emailController.text;
+    final user = _userTableData[index];
+
+    try {
+      await UserService.updateUser(user[0], name, email);
+      _userTableData[index] = [user[0], name, email];
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User updated successfully'),
+        ),
+      );
+
+      setState(() {
+        _userTableData = _userTableData;
+      });
+
+      _nomeController.clear();
+      _emailController.clear();
+      Navigator.of(context).pop();
+    } catch (e) {
+      print('Error updating user: $e');
+    }
+  }
+
+  void _showUpdateUserModal(BuildContext context, int index) {
+    final user = _userTableData[index];
+    _nomeController.text = user[1]; 
+    _emailController.text = user[2];
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Update User'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _nomeController,
+                  decoration: InputDecoration(labelText: 'Nome'),
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); 
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _updateUser(context, index);
+              },
+              child: Text('Update'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
