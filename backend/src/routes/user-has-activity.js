@@ -8,7 +8,7 @@ userHasActivityRoutes.get("/", userHasActivityController.findMany);
 
 // userHasActivityRoutes.get("/:id", userHasActivityController.findById);
 
-// userHasActivityRoutes.post("/", userHasActivityController.create);
+userHasActivityRoutes.post("/", userHasActivityController.create);
 
 // userHasActivityRoutes.patch("/:id", userHasActivityController.update);
 

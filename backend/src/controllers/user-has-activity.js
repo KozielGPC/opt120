@@ -1,5 +1,5 @@
 const { responseHandler } = require("../utils/apiResponseHandler");
-const { User } = require("../models/user");
+const { UserHasActivity } = require("../models/user-has-activity");
 const { userHasActivityRepository } = require("../repository/user-has-activity");
 
 class UserHasActivityController {
@@ -39,25 +39,23 @@ class UserHasActivityController {
     try {
       const input = req.body;
 
-      const emailExists = await userRepository.findByEmail(input.email);
+      // const emailExists = await userHasActivityRepository.findByEmail(input.email);
 
-      if (emailExists.length > 0) {
-        return responseHandler.validationErrorResponse(
-          res,
-          "Email already exists"
-        );
-      }
+      // if (emailExists.length > 0) {
+      //   return responseHandler.validationErrorResponse(
+      //     res,
+      //     "Email already exists"
+      //   );
+      // }
 
-      const user = new User(null, input.name, input.email, input.password);
+      const userHasActivity = new UserHasActivity(input.user_id, input.activity_id, input.user_grade, input.delivery_date);
 
-      await userRepository.create(user);
-
-      const createdUser = await userRepository.getLastInsert();
+      await userHasActivityRepository.create(userHasActivity);
 
       return responseHandler.successResponseWithData(
         res,
-        "User Created",
-        createdUser,
+        "UserHasActivity Created",
+        userHasActivity,
         200
       );
     } catch (error) {

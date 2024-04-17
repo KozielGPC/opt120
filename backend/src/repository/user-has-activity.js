@@ -1,7 +1,7 @@
 const { db } = require("../providers/database");
-const { userHasActivityQueries } = require("../queries/user-has-activity"); 
+const { userHasActivityQueries } = require("../queries/user-has-activity");
 
-class UserHasActivityRepository{
+class UserHasActivityRepository {
     async findMany() {
         return new Promise((resolve, reject) => {
             db.query(userHasActivityQueries.findMany, function (err, result) {
@@ -13,16 +13,6 @@ class UserHasActivityRepository{
                 }
             });
         });
-        // return [
-        //     {
-        //         id: 1,
-        //         name: "John Doe",
-        //     },
-        //     {
-        //         id: 2,
-        //         name: "Jane Doe",
-        //     },
-        // ];
     }
 
     async findById(id) {
@@ -42,24 +32,11 @@ class UserHasActivityRepository{
         // };
     }
 
-    async create(user) {
+    async create(userHasActivity) {
         return new Promise((resolve, reject) => {
-            db.query(userQueries.create(user.name, user.email, user.password), function (err, result) {
+            db.query(userHasActivityQueries.create(userHasActivity.user_id, userHasActivity.activity_id, userHasActivity.user_grade, userHasActivity.delivery_date), function (err, result) {
                 if (err) {
-                    console.error("Error on create user", err);
-                    reject(err);
-                } else {
-                    resolve(result);
-                }
-            });
-        });
-    }
-
-    async getLastInsert() {
-        return new Promise((resolve, reject) => {
-            db.query(userQueries.getLastInsert, function (err, result) {
-                if (err) {
-                    console.error("Error on get last user insert", err);
+                    console.error("Error on create userHasActivity", err);
                     reject(err);
                 } else {
                     resolve(result);
