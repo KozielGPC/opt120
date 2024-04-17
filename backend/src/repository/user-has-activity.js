@@ -62,8 +62,17 @@ class UserHasActivityRepository {
         // };
     }
 
-    update(user) {
-        return user;
+    update(id_user, id_activity, user_grade) {
+        return new Promise((resolve, reject) => {
+            db.query(userHasActivityQueries.update(id_user, id_activity, user_grade), function (err, result) {
+                if (err) {
+                    console.error("Error on update", err);
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
     }
 
     async delete(id_user, id_activity) {

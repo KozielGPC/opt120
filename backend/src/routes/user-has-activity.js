@@ -10,7 +10,7 @@ userHasActivityRoutes.get("/", userHasActivityController.findMany);
 
 userHasActivityRoutes.post("/", userHasActivityController.create);
 
-// userHasActivityRoutes.patch("/:id", userHasActivityController.update);
+userHasActivityRoutes.patch("/user/:id_user/activity/:id_activity", userHasActivityController.update);
 
 userHasActivityRoutes.delete("/user/:id_user/activity/:id_activity", userHasActivityController.delete);
 

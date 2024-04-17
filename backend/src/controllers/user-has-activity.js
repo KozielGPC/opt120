@@ -65,15 +65,17 @@ class UserHasActivityController {
 
   async update(req, res) {
     try {
-      const user_id = req.params.id;
+      const id_user = req.params.id_user;
+      const id_activity = req.params.id_activity;
 
-      const user = userRepository.findById(user_id);
+      const userHasActivity = await userHasActivityRepository.findByUserIdAndActivityId(id_user, id_activity);
 
-      const updated_user = userRepository.update(user);
+      await userHasActivityRepository.update(id_user, id_activity, user_grade);
+
       return responseHandler.successResponseWithData(
         res,
-        "Update User with id: " + user_id,
-        updated_user,
+        "Updated userHasActivity with user id: " + id_user + " activity id: " + id_activity,
+        userHasActivity,
         200
       );
     } catch (error) {
