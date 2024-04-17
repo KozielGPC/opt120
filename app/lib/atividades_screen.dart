@@ -8,11 +8,12 @@ class AtividadesScreen extends StatefulWidget {
 }
 
 class _AtividadesScreenState extends State<AtividadesScreen> {
-  List<List<String>> _atividadeTableData = [];
+  List<List<String>> _activityTableData = [];
 
   final TextEditingController _tituloController = TextEditingController();
   final TextEditingController _notaController = TextEditingController();
   final TextEditingController _descricaoController = TextEditingController();
+  final TextEditingController _deadlineController = TextEditingController(); // Added
 
   @override
   void initState() {
@@ -24,7 +25,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
     final atividadeList = await AtividadeService.getAtividadeList();
 
     setState(() {
-      _atividadeTableData = atividadeList;
+      _activityTableData = atividadeList;
     });
   }
 
@@ -47,7 +48,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Atividade List',
+                        'Activities List',
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
@@ -57,17 +58,16 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
                         onPressed: () {
                           _showCreateAtividadeModal(context);
                         },
-                        child: Text('Create Atividade'),
+                        child: Text('Create Activity'),
                       ),
                     ],
                   ),
                 ),
                 DataTableWidget(
-                  fieldNames: ['Titulo', 'Nota', 'Descrição'],
-                  inputData: _atividadeTableData,
+                  fieldNames: ['ID', 'Title', 'Grade', 'Description', 'Deadline'], // Updated
+                  inputData: _activityTableData,
                   deleteRow: (index) {
-                    // Delete row logic here
-                    print('Deleting row at index $index');
+                    _deleteActivity(context, index);
                   },
                   updateRow: (index) {
                     // Update row logic here
@@ -83,32 +83,33 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
   }
 
   void _showCreateAtividadeModal(BuildContext context) {
-    final TextEditingController tituloController = TextEditingController();
-    final TextEditingController notaController = TextEditingController();
-    final TextEditingController descricaoController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Create Atividade'),
+          title: Text('Create Activity'),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
-                  controller: tituloController,
-                  decoration: InputDecoration(labelText: 'Titulo'),
+                  controller: _tituloController,
+                  decoration: InputDecoration(labelText: 'Title'),
                 ),
                 TextFormField(
-                  controller: notaController,
-                  decoration: InputDecoration(labelText: 'Nota'),
+                  controller: _notaController,
+                  decoration: InputDecoration(labelText: 'Grade'),
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                 ),
                 TextFormField(
-                  controller: descricaoController,
-                  decoration: InputDecoration(labelText: 'Descrição'),
+                  controller: _descricaoController,
+                  decoration: InputDecoration(labelText: 'Description'),
                   maxLines: null,
+                ),
+                TextFormField( // Added
+                  controller: _deadlineController,
+                  decoration: InputDecoration(labelText: 'Deadline (YYYY-MM-DD)'),
+                  keyboardType: TextInputType.datetime,
                 ),
               ],
             ),
@@ -122,7 +123,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                _createAtividade(context);
+                _createActivity(context);
               },
               child: Text('Create'),
             ),
@@ -132,20 +133,42 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
     );
   }
 
-  void _createAtividade(BuildContext context) async {
+  void _createActivity(BuildContext context) async {
     final String titulo = _tituloController.text;
     final String nota = _notaController.text;
     final String descricao = _descricaoController.text;
+    final String deadline = _deadlineController.text; // Added
 
     try {
-      await AtividadeService.createAtividade(titulo, nota, descricao);
+      await AtividadeService.createActivity(titulo, nota, descricao, deadline); // Updated
       await _loadAtividades();
       _tituloController.clear();
       _notaController.clear();
       _descricaoController.clear();
+      _deadlineController.clear(); // Added
       Navigator.of(context).pop();
     } catch (e) {
       print('Error creating atividade: $e');
+    }
+  }
+
+  void _deleteActivity(BuildContext context, int index) async {
+    try {
+      final activity = _activityTableData[index];
+      await AtividadeService.deleteActivity(activity[0]);
+      _activityTableData.removeAt(index);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Activity deleted successfully'),
+        ),
+      );
+
+      setState(() {
+        _activityTableData = _activityTableData;
+      });
+    } catch (e) {
+      print('Error deleting activity: $e');
     }
   }
 }

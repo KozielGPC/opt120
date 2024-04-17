@@ -41,7 +41,7 @@ class UserService {
       await ApiService.delete('user/$id');
       print('User deleted successfully');
     } catch (e) {
-      print('Error fetching user list: $e');
+      print('Error deleting user: $e');
       rethrow;
     }
   }
