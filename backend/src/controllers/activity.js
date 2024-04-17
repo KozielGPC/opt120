@@ -48,7 +48,13 @@ class ActivityController {
         );
       }
 
-      const activity = new Activity(null, input.title, input.grade, input.description, input.deadline);
+      const activity = new Activity(
+        null,
+        input.title,
+        input.grade,
+        input.description,
+        input.deadline
+      );
 
       await activityRepository.create(activity);
 
@@ -69,13 +75,66 @@ class ActivityController {
     try {
       const activity_id = req.params.id;
 
-      const activity = activityRepository.findById(activity_id);
+      const activity = await activityRepository.findById(activity_id);
 
-      const updated_activity = activityRepository.update(activity);
+      if (!activity) {
+        return responseHandler.notFoundResponse(
+          res,
+          "Activity with id: " + activity_id + " not found"
+        );
+      }
+
+      const input = req.body;
+
+      const activity_input = new Activity(
+        activity_id,
+        input.title ?? activity.title,
+        input.grade ?? activity.grade,
+        input.description ?? activity.description,
+        input.deadline ?? activity.deadline
+      );
+
+      await activityRepository.update(activity_input);
+
       return responseHandler.successResponseWithData(
         res,
         "Update Activity with id: " + user_id,
         updated_activity,
+        200
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async update(req, res) {
+    try {
+      const user_id = req.params.id;
+
+      const user = await userRepository.findById(user_id);
+
+      if (!user) {
+        return responseHandler.notFoundResponse(
+          res,
+          "User with id: " + user_id + " not found"
+        );
+      }
+
+      const input = req.body;
+
+      const user_input = new User(
+        user_id,
+        input.name ?? user.name,
+        input.email ?? user.email,
+        input.password ?? user.password
+      );
+
+      await userRepository.update(user_input);
+
+      return responseHandler.successResponseWithData(
+        res,
+        "Update User with id: " + user_id,
+        user_input,
         200
       );
     } catch (error) {
