@@ -13,7 +13,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
   final TextEditingController _tituloController = TextEditingController();
   final TextEditingController _notaController = TextEditingController();
   final TextEditingController _descricaoController = TextEditingController();
-  final TextEditingController _deadlineController = TextEditingController(); // Added
+  final TextEditingController _deadlineController = TextEditingController(); 
 
   @override
   void initState() {
@@ -64,13 +64,12 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
                   ),
                 ),
                 DataTableWidget(
-                  fieldNames: ['ID', 'Title', 'Grade', 'Description', 'Deadline'], // Updated
+                  fieldNames: ['ID', 'Title', 'Grade', 'Description', 'Deadline'], 
                   inputData: _activityTableData,
                   deleteRow: (index) {
                     _deleteActivity(context, index);
                   },
                   updateRow: (index) {
-                    // Update row logic here
                     print('Updating row at index $index');
                   },
                 ),
@@ -137,15 +136,15 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
     final String titulo = _tituloController.text;
     final String nota = _notaController.text;
     final String descricao = _descricaoController.text;
-    final String deadline = _deadlineController.text; // Added
+    final String deadline = _deadlineController.text; 
 
     try {
-      await AtividadeService.createActivity(titulo, nota, descricao, deadline); // Updated
+      await AtividadeService.createActivity(titulo, nota, descricao, deadline);
       await _loadAtividades();
       _tituloController.clear();
       _notaController.clear();
       _descricaoController.clear();
-      _deadlineController.clear(); // Added
+      _deadlineController.clear();
       Navigator.of(context).pop();
     } catch (e) {
       print('Error creating atividade: $e');
