@@ -57,9 +57,9 @@ class UserHasActivitiesService {
       int userId, int activityId, double userGrade) async {
     try {
       final payload = {
-        'nota_usuario': userGrade,
+        'user_grade': userGrade,
       };
-      await ApiService.put('user_has_activities/$userId/$activityId', payload);
+      await ApiService.patch('user-has-activity/user/$userId/activity/$activityId', payload);
     } catch (e) {
       print('Error updating user activity grade: $e');
       rethrow;
