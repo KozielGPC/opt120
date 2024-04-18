@@ -50,7 +50,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'User List',
+                        'UserHasActivity List',
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
@@ -84,8 +84,10 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
   }
 
   void _deleteUserHasActivity(int index) async {
-    final int userId = int.tryParse(_usersHasActivitiesTableData[index][0]) ?? 0;
-    final int activityId = int.tryParse(_usersHasActivitiesTableData[index][1]) ?? 0;
+    final int userId =
+        int.tryParse(_usersHasActivitiesTableData[index][0]) ?? 0;
+    final int activityId =
+        int.tryParse(_usersHasActivitiesTableData[index][1]) ?? 0;
 
     if (userId <= 0 || activityId <= 0) {
       _showError('Invalid user or activity ID');
@@ -115,7 +117,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
 
     try {
       await UserHasActivitiesService.assignActivityToUser(
-          idAtividade, idUsuario, grade, sendDate);
+          idUsuario, idAtividade, grade, sendDate);
 
       await _loadUsersHasActivities();
 
@@ -172,7 +174,8 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
                 ),
                 TextFormField(
                   controller: _sendDateController,
-                  decoration: InputDecoration(labelText: 'Send Date (YYYY-MM-DD)'),
+                  decoration:
+                      InputDecoration(labelText: 'Send Date (YYYY-MM-DD)'),
                   keyboardType: TextInputType.datetime,
                 ),
               ],
@@ -205,8 +208,14 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
     final double grade = double.tryParse(_gradeController.text) ?? 0.0;
 
     try {
-      await UserHasActivitiesService.updateUserActivityGrade(idUsuario, idAtividade, grade);
-      _usersHasActivitiesTableData[index] = [userHasActivity[0], userHasActivity[1], _gradeController.text, userHasActivity[3]];
+      await UserHasActivitiesService.updateUserActivityGrade(
+          idUsuario, idAtividade, grade);
+      _usersHasActivitiesTableData[index] = [
+        userHasActivity[0],
+        userHasActivity[1],
+        _gradeController.text,
+        userHasActivity[3]
+      ];
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -228,7 +237,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
   void _showUpdateUserHasActivityModal(BuildContext context, int index) {
     final userHasActivity = _usersHasActivitiesTableData[index];
     _idUsuarioController.text = userHasActivity[0];
-    _idAtividadeController.text = userHasActivity[1]; 
+    _idAtividadeController.text = userHasActivity[1];
 
     showDialog(
       context: context,
@@ -249,7 +258,7 @@ class _UsuarioAtividadesScreenState extends State<UsuarioAtividadesScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               child: Text('Cancel'),
             ),
