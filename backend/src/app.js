@@ -2,17 +2,20 @@ const express = require("express");
 const cors = require("cors");
 const { activityRoutes } = require("./routes/activity");
 const { userRoutes } = require("./routes/user");
+const { authRoutes } = require("./routes/auth");
 const { userHasActivityRoutes } = require("./routes/user-has-activity");
 const { db } = require("./providers/database");
+const { verifyToken } = require('./middlewares/auth');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/activity", activityRoutes);
-app.use("/user", userRoutes);
-app.use("/user-has-activity", userHasActivityRoutes);
+app.use("/auth", authRoutes);
+app.use("/activity", verifyToken, activityRoutes);
+app.use("/user", verifyToken, userRoutes);
+app.use("/user-has-activity", verifyToken, userHasActivityRoutes);
 
 db.connect(function (err) {
   if (err) {

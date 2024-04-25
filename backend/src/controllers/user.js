@@ -1,6 +1,7 @@
 const { responseHandler } = require("../utils/apiResponseHandler");
 const { User } = require("../models/user");
 const { userRepository } = require("../repository/user");
+const bcrypt = require('bcrypt');
 
 class UserController {
   async findMany(req, res) {
@@ -48,7 +49,8 @@ class UserController {
         );
       }
 
-      const user = new User(null, input.name, input.email, input.password);
+      const hashedPassword = await bcrypt.hash(input.password, 10);
+      const user = new User(null, input.name, input.email, hashedPassword);
 
       await userRepository.create(user);
 
