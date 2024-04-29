@@ -7,11 +7,12 @@ class AuthController {
     async login(req, res) {
         try {
             const { email, password } = req.body;
-            const user = await userRepository.findByEmail(email);
+            const users = await userRepository.findByEmail(email);
+            const user = users[0]
             if (!user) {
                 return res.status(401).json({ error: 'Authentication failed' });
             }
-            const passwordMatch = await bcrypt.compare(password, user[0].password);
+            const passwordMatch = await bcrypt.compare(password, user.password);
             if (!passwordMatch) {
                 return res.status(401).json({ error: 'Authentication failed' });
             }

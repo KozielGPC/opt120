@@ -1,5 +1,5 @@
+import 'package:app/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'home_page.dart';
 import 'package:app/api_service.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
         useMaterial3: true,
       ),
-      home: HomeScreen(), 
+      home:  LoginScreen(),
     );
   }
 }
