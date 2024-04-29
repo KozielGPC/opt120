@@ -29,6 +29,24 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
     });
   }
 
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  void _showSuccess(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,6 +158,9 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
 
     try {
       await AtividadeService.createActivity(titulo, nota, descricao, deadline);
+
+      _showSuccess('Activity created successfully');
+
       await _loadAtividades();
       _tituloController.clear();
       _notaController.clear();
@@ -147,7 +168,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
       _deadlineController.clear();
       Navigator.of(context).pop();
     } catch (e) {
-      print('Error creating atividade: $e');
+      _showError('Error creating activity');
     }
   }
 
@@ -156,18 +177,14 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
       final activity = _activityTableData[index];
       await AtividadeService.deleteActivity(activity[0]);
       _activityTableData.removeAt(index);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Activity deleted successfully'),
-        ),
-      );
+      
+      _showSuccess('Activity deleted successfully');
 
       setState(() {
         _activityTableData = _activityTableData;
       });
     } catch (e) {
-      print('Error deleting activity: $e');
+      _showError('Error deleting activity');
     }
   }
 }

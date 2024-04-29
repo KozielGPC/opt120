@@ -28,6 +28,24 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
     });
   }
 
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  void _showSuccess(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,11 +151,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
     try {
       final createdUser = await UserService.createUser(nome, email, senha);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('User created successfully'),
-        ),
-      );
+      _showSuccess('User created successfully');
 
       final userData = [
         '${createdUser['id']}',
@@ -156,7 +170,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
       _senhaController.clear();
       Navigator.of(context).pop();
     } catch (e) {
-      print('Error creating user: $e');
+      _showError('Error creating user');
     }
   }
 
@@ -166,17 +180,13 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
       await UserService.deleteUser(user[0]);
       _userTableData.removeAt(index);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('User deleted successfully'),
-        ),
-      );
+      _showSuccess('User deleted successfully');
 
       setState(() {
         _userTableData = _userTableData;
       });
     } catch (e) {
-      print('Error deleting user: $e');
+      _showError('Error deleting user');
     }
   }
 
@@ -189,11 +199,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
       await UserService.updateUser(user[0], name, email);
       _userTableData[index] = [user[0], name, email];
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('User updated successfully'),
-        ),
-      );
+      _showSuccess('User updated successfully');
 
       setState(() {
         _userTableData = _userTableData;
@@ -203,13 +209,13 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
       _emailController.clear();
       Navigator.of(context).pop();
     } catch (e) {
-      print('Error updating user: $e');
+      _showError('Error updating user');
     }
   }
 
   void _showUpdateUserModal(BuildContext context, int index) {
     final user = _userTableData[index];
-    _nomeController.text = user[1]; 
+    _nomeController.text = user[1];
     _emailController.text = user[2];
 
     showDialog(
@@ -235,7 +241,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               child: Text('Cancel'),
             ),
