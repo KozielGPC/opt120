@@ -107,41 +107,6 @@ class ActivityController {
     }
   }
 
-  async update(req, res) {
-    try {
-      const user_id = req.params.id;
-
-      const user = await userRepository.findById(user_id);
-
-      if (!user) {
-        return responseHandler.notFoundResponse(
-          res,
-          "User with id: " + user_id + " not found"
-        );
-      }
-
-      const input = req.body;
-
-      const user_input = new User(
-        user_id,
-        input.name ?? user.name,
-        input.email ?? user.email,
-        input.password ?? user.password
-      );
-
-      await userRepository.update(user_input);
-
-      return responseHandler.successResponseWithData(
-        res,
-        "Update User with id: " + user_id,
-        user_input,
-        200
-      );
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async delete(req, res) {
     try {
       const activity_id = req.params.id;

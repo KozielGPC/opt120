@@ -33,6 +33,22 @@ class AtividadeService {
     }
   }
 
+  static Future updateActivity(String id, String title, String grade, String description, String deadline) async {
+    try {
+      final payload = {
+        'title': title,
+        'grade': grade,
+        'description': description,
+        'deadline': deadline
+      };
+      final response = await ApiService.patch('activity/$id', payload);
+      return response['data'][0];
+    } catch (e) {
+      print('Error updating activity: $e');
+      rethrow;
+    }
+  }
+
   static Future<void> deleteActivity(String id) async {
     try {
       await ApiService.delete('activity/$id');

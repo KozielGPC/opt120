@@ -47,6 +47,88 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
     );
   }
 
+  void _updateActivity(BuildContext context, int index) async {
+    final String title = _tituloController.text;
+    final String grade = _notaController.text;
+    final String description = _descricaoController.text;
+    final String deadline = _deadlineController.text;
+
+    final activity = _activityTableData[index];
+
+    try {
+      await AtividadeService.updateActivity(activity[0], title, grade, description, deadline);
+      _activityTableData[index] = [activity[0], title, grade, description, deadline];
+
+      _showSuccess('Activity updated successfully');
+
+      setState(() {
+        _activityTableData = _activityTableData;
+      });
+
+      _tituloController.clear();
+      _notaController.clear();
+      _descricaoController.clear();
+      _deadlineController.clear();
+      Navigator.of(context).pop();
+    } catch (e) {
+      _showError('Error updating activity');
+    }
+  }
+
+  void _showUpdateUserModal(BuildContext context, int index) {
+    final activity = _activityTableData[index];
+    _tituloController.text = activity[1];
+    _notaController.text = activity[2];
+    _descricaoController.text = activity[3];
+    _deadlineController.text = activity[4];
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Update Activity'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _tituloController,
+                  decoration: InputDecoration(labelText: 'Title'),
+                ),
+                TextFormField(
+                  controller: _notaController,
+                  decoration: InputDecoration(labelText: 'Grade'),
+                ),
+                TextFormField(
+                  controller: _descricaoController,
+                  decoration: InputDecoration(labelText: 'Description'),
+                ),
+                TextFormField(
+                  controller: _deadlineController,
+                  decoration: InputDecoration(labelText: 'Deadline'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _updateActivity(context, index);
+              },
+              child: Text('Update'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +170,7 @@ class _AtividadesScreenState extends State<AtividadesScreen> {
                     _deleteActivity(context, index);
                   },
                   updateRow: (index) {
-                    print('Updating row at index $index');
+                    _showUpdateUserModal(context, index);
                   },
                 ),
               ],
