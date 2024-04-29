@@ -11,6 +11,10 @@ class ApiService {
     _baseUrl = baseUrl;
   }
 
+  static void setAuthorizationToken(String token) {
+    _defaultHeaders['Authorization'] = token;
+  }
+
   static Future<Map<String, dynamic>> get(String path, {Map<String, String>? headers}) async {
     final response = await http.get(
       Uri.parse('$_baseUrl/$path'),
